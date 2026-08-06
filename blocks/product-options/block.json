@@ -1,20 +1,47 @@
 {
   "apiVersion": 3,
   "name": "northstar/product-options",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "title": "Northstar Product Options",
   "category": "woocommerce",
   "icon": "screenoptions",
   "description": "Selectable WooCommerce variation cards with live pricing and Add to Cart.",
   "textdomain": "northstar-product-options",
   "attributes": {
-    "productId": { "type": "number", "default": 0 },
-    "layout": { "type": "string", "default": "columns" },
-    "buttonText": { "type": "string", "default": "" },
-    "buttonBg": { "type": "string", "default": "" }
+    "productId": {
+      "type": "number",
+      "default": 0
+    },
+    "layout": {
+      "type": "string",
+      "default": "columns"
+    },
+    "buttonText": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonBg": {
+      "type": "string",
+      "default": ""
+    },
+    "compactBorderColor": {
+      "type": "string",
+      "default": "#000000"
+    },
+    "compactBorderWidth": {
+      "type": "number",
+      "default": 1
+    },
+    "compactBorderRadius": {
+      "type": "number",
+      "default": 9
+    }
   },
   "supports": {
     "html": false,
-    "align": ["wide", "full"]
+    "align": [
+      "wide",
+      "full"
+    ]
   }
 }

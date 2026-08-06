@@ -30,8 +30,8 @@
   margin:0 0 24px;
   overflow:hidden;
   padding:0;
-  border:1px solid #a9d8cf;
-  border-radius:9px;
+  border:var(--nspo-compact-border-width, 1px) solid var(--nspo-compact-border-color, #000);
+  border-radius:var(--nspo-compact-border-radius, 9px);
 }
 .nspo--horizontal-compact .nspo__card{
   display:grid;
@@ -42,7 +42,7 @@
   min-height:54px;
   padding:11px 16px;
   border:0;
-  border-bottom:1px solid #a9d8cf;
+  border-bottom:var(--nspo-compact-border-width, 1px) solid var(--nspo-compact-border-color, #000);
   border-radius:0;
   background:transparent;
   text-align:left;
@@ -65,17 +65,10 @@
   border:2px solid currentColor;
   border-radius:50%;
   grid-column:1;
+  background:transparent;
 }
-.nspo--horizontal-compact .nspo__card.is-selected:after{
-  content:"";
-  position:absolute;
-  left:22px;
-  top:50%;
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:currentColor;
-  transform:translateY(-50%);
+.nspo--horizontal-compact .nspo__card.is-selected:before{
+  background:radial-gradient(circle at 50% 50%, currentColor 0 4px, transparent 4.5px);
 }
 .nspo--horizontal-compact .nspo__image-wrap,
 .nspo--horizontal-compact .nspo__regular-price,
@@ -116,7 +109,6 @@
     padding:11px 12px;
   }
   .nspo--horizontal-compact .nspo__card.is-selected{padding:11px 12px}
-  .nspo--horizontal-compact .nspo__card.is-selected:after{left:18px}
   .nspo--horizontal-compact .nspo__title{font-size:14px}
   .nspo--horizontal-compact .nspo__prices{font-size:14px}
   .nspo--horizontal-compact .nspo__badge{
@@ -126,4 +118,64 @@
     padding:5px 9px;
     font-size:12px;
   }
+}
+
+/* Gutenberg editor preview: keep controls non-interactive without adding a visible frame. */
+.editor-styles-wrapper .nspo-editor-block{cursor:pointer;border:0!important;outline:0!important;box-shadow:none!important}
+.editor-styles-wrapper .nspo-editor-block .nspo{pointer-events:none;border:0!important;outline:0!important;box-shadow:none!important}
+.editor-styles-wrapper .block-editor-block-list__block.is-selected:has(> .nspo-editor-block),
+.editor-styles-wrapper .block-editor-block-list__block.has-child-selected:has(> .nspo-editor-block){outline:0!important;box-shadow:none!important}
+
+
+/* v1.0.1 editor-only hotfix: remove Gutenberg's selection frame around this block. */
+.editor-styles-wrapper .block-editor-block-list__block[data-type="northstar/product-options"],
+.editor-styles-wrapper .block-editor-block-list__block[data-type="northstar/product-options"] > .nspo-editor-block {
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+}
+.editor-styles-wrapper .block-editor-block-list__block[data-type="northstar/product-options"]::before,
+.editor-styles-wrapper .block-editor-block-list__block[data-type="northstar/product-options"]::after,
+.editor-styles-wrapper .block-editor-block-list__block[data-type="northstar/product-options"] > .nspo-editor-block::before,
+.editor-styles-wrapper .block-editor-block-list__block[data-type="northstar/product-options"] > .nspo-editor-block::after {
+  content:none!important;
+  display:none!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+}
+
+
+/* v1.0.2 frontend outer-frame fix.
+ * Some themes apply generic borders to dynamic block/root wrappers.
+ * Keep borders only on the intended selector and purchase row elements. */
+.nspo,
+.wp-block-northstar-product-options,
+.nspo-editor-block,
+.nspo-block-shell {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background-image: none !important;
+}
+.nspo::before,
+.nspo::after,
+.wp-block-northstar-product-options::before,
+.wp-block-northstar-product-options::after,
+.nspo-editor-block::before,
+.nspo-editor-block::after,
+.nspo-block-shell::before,
+.nspo-block-shell::after {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+/* Compact cards retain one outer border and only the row dividers. */
+.nspo--horizontal-compact > .nspo__cards {
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+.nspo--horizontal-compact > .nspo__purchase-row {
+  box-shadow: none !important;
+  outline: 0 !important;
 }

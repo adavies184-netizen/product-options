@@ -4,7 +4,7 @@ Tags: woocommerce, variations, gutenberg, fse, product options
 Requires at least: 6.3
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 0.1.2
+Stable tag: 1.0.2
 
 A card-based WooCommerce variation selector for classic, Gutenberg and FSE product templates.
 
@@ -31,3 +31,15 @@ A card-based WooCommerce variation selector for classic, Gutenberg and FSE produ
 == Version 0.1.2 ==
 
 * Added a compact horizontal row style with radio indicators, right-aligned prices and pill badges.
+
+
+== Version 0.1.3 ==
+
+* Perfectly centred compact-row radio indicator.
+* Configurable compact border colour, width and corner radius.
+* Live Gutenberg preview and more precise block selection.
+
+
+== Version 1.0.2 ==
+
+* Removed unintended frontend borders from the Northstar block root and wrapper while preserving selector and purchase-row borders.

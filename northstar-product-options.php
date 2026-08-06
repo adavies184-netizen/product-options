@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Northstar Product Options
  * Description: Replaces WooCommerce variation dropdowns with selectable product option cards. Includes Gutenberg/FSE block, shortcode, classic-theme automatic placement and AJAX side-cart compatibility.
- * Version: 0.1.2
+ * Version: 1.0.2
  * Author: Northstar Ridge Limited
  * Requires at least: 6.3
  * Requires PHP: 7.4
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 final class Northstar_Product_Options {
-	const VERSION = '0.1.2';
+	const VERSION = '1.0.2';
 	const META_ENABLED = '_nspo_enabled';
 	const META_PLACEMENT = '_nspo_placement';
 	const META_DEFAULT_VARIATION = '_nspo_default_variation';
@@ -245,6 +245,9 @@ final class Northstar_Product_Options {
 				'layout' => 'columns',
 				'button_text' => '',
 				'button_bg' => '',
+				'compact_border_color' => '#000000',
+				'compact_border_width' => 1,
+				'compact_border_radius' => 9,
 			),
 			$atts,
 			'northstar_product_options'
@@ -259,6 +262,9 @@ final class Northstar_Product_Options {
 				'layout' => sanitize_key( $atts['layout'] ),
 				'buttonText' => sanitize_text_field( $atts['button_text'] ),
 				'buttonBg' => sanitize_hex_color( $atts['button_bg'] ),
+				'compactBorderColor' => $this->sanitize_css_color( $atts['compact_border_color'] ),
+				'compactBorderWidth' => absint( $atts['compact_border_width'] ),
+				'compactBorderRadius' => absint( $atts['compact_border_radius'] ),
 			)
 		);
 	}
@@ -278,6 +284,9 @@ final class Northstar_Product_Options {
 				'layout' => isset( $attributes['layout'] ) ? sanitize_key( $attributes['layout'] ) : 'columns',
 				'buttonText' => isset( $attributes['buttonText'] ) ? sanitize_text_field( $attributes['buttonText'] ) : '',
 				'buttonBg' => isset( $attributes['buttonBg'] ) ? sanitize_hex_color( $attributes['buttonBg'] ) : '',
+				'compactBorderColor' => isset( $attributes['compactBorderColor'] ) ? $this->sanitize_css_color( $attributes['compactBorderColor'] ) : '#000000',
+				'compactBorderWidth' => isset( $attributes['compactBorderWidth'] ) ? absint( $attributes['compactBorderWidth'] ) : 1,
+				'compactBorderRadius' => isset( $attributes['compactBorderRadius'] ) ? absint( $attributes['compactBorderRadius'] ) : 9,
 			)
 		);
 	}
@@ -309,12 +318,18 @@ final class Northstar_Product_Options {
 				'layout' => 'columns',
 				'buttonText' => '',
 				'buttonBg' => '',
+				'compactBorderColor' => '#000000',
+				'compactBorderWidth' => 1,
+				'compactBorderRadius' => 9,
 			)
 		);
 		$allowed_layouts = array( 'columns', 'horizontal', 'horizontal-compact' );
 		$layout = in_array( $settings['layout'], $allowed_layouts, true ) ? $settings['layout'] : 'columns';
 		$button_text = $settings['buttonText'] ? $settings['buttonText'] : $product->single_add_to_cart_text();
 		$button_bg = sanitize_hex_color( $settings['buttonBg'] );
+		$compact_border_color = $this->sanitize_css_color( $settings['compactBorderColor'] );
+		$compact_border_width = min( 20, max( 0, absint( $settings['compactBorderWidth'] ) ) );
+		$compact_border_radius = min( 100, max( 0, absint( $settings['compactBorderRadius'] ) ) );
 
 		$product_id = $product->get_id();
 		if ( isset( $this->rendered_products[ $product_id ] ) ) {
@@ -356,7 +371,16 @@ final class Northstar_Product_Options {
 
 		ob_start();
 		?>
-		<div class="nspo nspo--<?php echo esc_attr( $layout ); ?>" data-product-id="<?php echo esc_attr( $product_id ); ?>" data-default-variation="<?php echo esc_attr( $default_id ); ?>"<?php echo $button_bg ? ' style="--nspo-button-bg:' . esc_attr( $button_bg ) . '"' : ''; ?>>
+		<?php
+		$inline_styles = array();
+		if ( $button_bg ) {
+			$inline_styles[] = '--nspo-button-bg:' . $button_bg;
+		}
+		$inline_styles[] = '--nspo-compact-border-color:' . ( $compact_border_color ?: '#000000' );
+		$inline_styles[] = '--nspo-compact-border-width:' . $compact_border_width . 'px';
+		$inline_styles[] = '--nspo-compact-border-radius:' . $compact_border_radius . 'px';
+		?>
+		<div class="nspo nspo--<?php echo esc_attr( $layout ); ?>" data-product-id="<?php echo esc_attr( $product_id ); ?>" data-default-variation="<?php echo esc_attr( $default_id ); ?>" style="<?php echo esc_attr( implode( ';', $inline_styles ) ); ?>">
 			<div class="nspo__cards" role="radiogroup" aria-label="<?php echo esc_attr__( 'Choose an option', 'northstar-product-options' ); ?>">
 				<?php foreach ( $variations as $index => $item ) : ?>
 					<button type="button" class="nspo__card<?php echo $item['id'] === $default_id ? ' is-selected' : ''; ?><?php echo ! $item['purchasable'] ? ' is-disabled' : ''; ?>" role="radio" aria-checked="<?php echo $item['id'] === $default_id ? 'true' : 'false'; ?>" data-variation='<?php echo esc_attr( wp_json_encode( $item ) ); ?>' <?php disabled( ! $item['purchasable'] ); ?>>
@@ -490,6 +514,20 @@ final class Northstar_Product_Options {
 				'variation_id' => $variation_id,
 			)
 		);
+	}
+
+	private function sanitize_css_color( $color ) {
+		$color = trim( (string) $color );
+		if ( '' === $color ) {
+			return '';
+		}
+		if ( sanitize_hex_color( $color ) ) {
+			return sanitize_hex_color( $color );
+		}
+		if ( preg_match( '/^rgba?\(\s*(?:25[0-5]|2[0-4]\d|1?\d?\d)\s*,\s*(?:25[0-5]|2[0-4]\d|1?\d?\d)\s*,\s*(?:25[0-5]|2[0-4]\d|1?\d?\d)(?:\s*,\s*(?:0|1|0?\.\d+))?\s*\)$/i', $color ) ) {
+			return $color;
+		}
+		return '';
 	}
 }
 
