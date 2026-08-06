@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Northstar Product Options
  * Description: Replaces WooCommerce variation dropdowns with selectable product option cards. Includes Gutenberg/FSE block, shortcode, classic-theme automatic placement and AJAX side-cart compatibility.
- * Version: 0.1.1
+ * Version: 0.1.2
  * Author: Northstar Ridge Limited
  * Requires at least: 6.3
  * Requires PHP: 7.4
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 final class Northstar_Product_Options {
-	const VERSION = '0.1.1';
+	const VERSION = '0.1.2';
 	const META_ENABLED = '_nspo_enabled';
 	const META_PLACEMENT = '_nspo_placement';
 	const META_DEFAULT_VARIATION = '_nspo_default_variation';
@@ -311,7 +311,8 @@ final class Northstar_Product_Options {
 				'buttonBg' => '',
 			)
 		);
-		$layout = 'horizontal' === $settings['layout'] ? 'horizontal' : 'columns';
+		$allowed_layouts = array( 'columns', 'horizontal', 'horizontal-compact' );
+		$layout = in_array( $settings['layout'], $allowed_layouts, true ) ? $settings['layout'] : 'columns';
 		$button_text = $settings['buttonText'] ? $settings['buttonText'] : $product->single_add_to_cart_text();
 		$button_bg = sanitize_hex_color( $settings['buttonBg'] );
 

@@ -20,7 +20,8 @@
                             value: a.layout || 'columns',
                             options: [
                                 { label: __('Three columns', 'northstar-product-options'), value: 'columns' },
-                                { label: __('Horizontal rows (stacked)', 'northstar-product-options'), value: 'horizontal' }
+                                { label: __('Horizontal rows with images', 'northstar-product-options'), value: 'horizontal' },
+                                { label: __('Compact horizontal rows', 'northstar-product-options'), value: 'horizontal-compact' }
                             ],
                             onChange: function (value) { props.setAttributes({ layout: value }); }
                         }),

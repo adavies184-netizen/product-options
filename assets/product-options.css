@@ -20,3 +20,110 @@
   .nspo--horizontal .nspo__image-wrap img{max-width:54px;max-height:54px}
   .nspo--horizontal .nspo__saving,.nspo--horizontal .nspo__badge,.nspo--horizontal .nspo__unavailable{grid-column:2;grid-row:3;justify-self:start;margin-top:4px}
 }
+
+
+/* v0.1.2 compact horizontal row style */
+.nspo--horizontal-compact .nspo__cards{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+  margin:0 0 24px;
+  overflow:hidden;
+  padding:0;
+  border:1px solid #a9d8cf;
+  border-radius:9px;
+}
+.nspo--horizontal-compact .nspo__card{
+  display:grid;
+  grid-template-columns:24px minmax(0,1fr) auto auto;
+  align-items:center;
+  gap:12px;
+  width:100%;
+  min-height:54px;
+  padding:11px 16px;
+  border:0;
+  border-bottom:1px solid #a9d8cf;
+  border-radius:0;
+  background:transparent;
+  text-align:left;
+  transform:none;
+  box-shadow:none;
+}
+.nspo--horizontal-compact .nspo__card:last-child{border-bottom:0}
+.nspo--horizontal-compact .nspo__card:hover{transform:none;background:rgba(0,0,0,.018)}
+.nspo--horizontal-compact .nspo__card.is-selected{
+  padding:11px 16px;
+  border-width:0;
+  background:rgba(0,0,0,.025);
+  box-shadow:none;
+}
+.nspo--horizontal-compact .nspo__card:before{
+  content:"";
+  display:block;
+  width:18px;
+  height:18px;
+  border:2px solid currentColor;
+  border-radius:50%;
+  grid-column:1;
+}
+.nspo--horizontal-compact .nspo__card.is-selected:after{
+  content:"";
+  position:absolute;
+  left:22px;
+  top:50%;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:currentColor;
+  transform:translateY(-50%);
+}
+.nspo--horizontal-compact .nspo__image-wrap,
+.nspo--horizontal-compact .nspo__regular-price,
+.nspo--horizontal-compact .nspo__saving{display:none}
+.nspo--horizontal-compact .nspo__title{
+  grid-column:2;
+  font-size:16px;
+  font-weight:700;
+  line-height:1.2;
+}
+.nspo--horizontal-compact .nspo__prices{
+  grid-column:3;
+  display:block;
+  justify-self:end;
+  font-size:16px;
+  font-weight:700;
+  white-space:nowrap;
+}
+.nspo--horizontal-compact .nspo__badge{
+  position:static;
+  grid-column:4;
+  min-height:0;
+  padding:6px 12px;
+  border-radius:999px;
+  background:#49aa88;
+  color:#fff;
+  font-size:14px;
+  font-weight:700;
+  line-height:1.1;
+  white-space:nowrap;
+}
+.nspo--horizontal-compact .nspo__card:nth-child(3) .nspo__badge{background:#49aa88}
+.nspo--horizontal-compact .nspo__unavailable{grid-column:4;justify-self:end}
+@media(max-width:520px){
+  .nspo--horizontal-compact .nspo__card{
+    grid-template-columns:22px minmax(0,1fr) auto;
+    gap:8px;
+    padding:11px 12px;
+  }
+  .nspo--horizontal-compact .nspo__card.is-selected{padding:11px 12px}
+  .nspo--horizontal-compact .nspo__card.is-selected:after{left:18px}
+  .nspo--horizontal-compact .nspo__title{font-size:14px}
+  .nspo--horizontal-compact .nspo__prices{font-size:14px}
+  .nspo--horizontal-compact .nspo__badge{
+    grid-column:2 / span 2;
+    justify-self:start;
+    margin-top:2px;
+    padding:5px 9px;
+    font-size:12px;
+  }
+}

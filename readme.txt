@@ -4,7 +4,7 @@ Tags: woocommerce, variations, gutenberg, fse, product options
 Requires at least: 6.3
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 0.1.1
+Stable tag: 0.1.2
 
 A card-based WooCommerce variation selector for classic, Gutenberg and FSE product templates.
 
@@ -26,3 +26,8 @@ A card-based WooCommerce variation selector for classic, Gutenberg and FSE produ
 4. Choose Automatic replacement for a standard classic product template, or Block/shortcode only for a custom Gutenberg/FSE template.
 5. Optionally enter a Card title and Badge inside each variation.
 6. For FSE/Greenshift templates, add the Northstar Product Options block and omit WooCommerce's standard Product Price and Add to Cart blocks.
+
+
+== Version 0.1.2 ==
+
+* Added a compact horizontal row style with radio indicators, right-aligned prices and pill badges.
